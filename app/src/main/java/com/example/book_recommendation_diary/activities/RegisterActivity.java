@@ -10,11 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.book_recommendation_diary.R;
 
+import com.example.book_recommendation_diary.database.DatabaseHelper;
+import com.example.book_recommendation_diary.utils.PasswordUtils;
+
+
 public class RegisterActivity extends AppCompatActivity {
 
     EditText etUsername, etEmail, etPassword;
     Button btnRegister;
     TextView tvLogin;
+
+    DatabaseHelper databaseHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +34,30 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         tvLogin = findViewById(R.id.tvLogin);
 
+        databaseHelper = new DatabaseHelper(this);
+
         btnRegister.setOnClickListener(v -> {
-            Toast.makeText(this, "Register button clicked", Toast.LENGTH_SHORT).show();
+
+            String username = etUsername.getText().toString().trim();
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
+
+            if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String hashedPassword = PasswordUtils.hashPassword(password);
+
+            boolean isInserted = databaseHelper.registerUser(username, email, hashedPassword);
+
+            if (isInserted) {
+                Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                finish(); // go back to login
+            } else {
+                Toast.makeText(this, "User already exists!", Toast.LENGTH_SHORT).show();
+            }
         });
+
     }
 }
