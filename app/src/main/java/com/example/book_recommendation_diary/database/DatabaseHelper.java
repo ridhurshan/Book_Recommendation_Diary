@@ -67,4 +67,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(DatabaseContract.UserTable.TABLE_NAME, null, values);
         return result != -1;
     }
+
+    public int loginUser(String email, String passwordHash) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Use _ID as defined in DatabaseContract/BaseColumns
+        // and match column names to the ones defined in Register/Contract
+        Cursor cursor = db.rawQuery(
+                "SELECT " + DatabaseContract.UserTable._ID +
+                        " FROM " + DatabaseContract.UserTable.TABLE_NAME +
+                        " WHERE " + DatabaseContract.UserTable.COLUMN_EMAIL + " = ? AND " +
+                        DatabaseContract.UserTable.COLUMN_PASSWORD + " = ?",
+                new String[]{email, passwordHash}
+        );
+
+        int userId = -1;
+        if (cursor.moveToFirst()) {
+            userId = cursor.getInt(0);
+        }
+
+        cursor.close();
+        return userId; 
+    }
 }
