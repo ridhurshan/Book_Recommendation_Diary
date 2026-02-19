@@ -6,6 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.book_recommendation_diary.models.Book;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "BookDiary.db";
@@ -46,7 +51,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean registerUser(String username, String email, String passwordHash) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Check if user already exists
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseContract.UserTable.TABLE_NAME +
                         " WHERE " + DatabaseContract.UserTable.COLUMN_EMAIL + " = ?",
@@ -55,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.getCount() > 0) {
             cursor.close();
-            return false; // user already exists
+            return false;
         }
         cursor.close();
 
@@ -70,9 +74,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public int loginUser(String email, String passwordHash) {
         SQLiteDatabase db = this.getReadableDatabase();
-
-        // Use _ID as defined in DatabaseContract/BaseColumns
-        // and match column names to the ones defined in Register/Contract
         Cursor cursor = db.rawQuery(
                 "SELECT " + DatabaseContract.UserTable._ID +
                         " FROM " + DatabaseContract.UserTable.TABLE_NAME +
@@ -85,8 +86,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             userId = cursor.getInt(0);
         }
-
         cursor.close();
-        return userId; 
+        return userId;
+    }
+
+    public boolean addBook(String title, String author, String description, float rating, int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.BookTable.COLUMN_TITLE, title);
+        values.put(DatabaseContract.BookTable.COLUMN_AUTHOR, author);
+        values.put(DatabaseContract.BookTable.COLUMN_DESCRIPTION, description);
+        values.put(DatabaseContract.BookTable.COLUMN_RATING, rating);
+        values.put(DatabaseContract.BookTable.COLUMN_USER_ID, userId);
+
+        long result = db.insert(DatabaseContract.BookTable.TABLE_NAME, null, values);
+        return result != -1;
+    }
+
+    public List<Book> getBooksByUser(int userId) {
+        List<Book> bookList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        
+        Cursor cursor = db.query(DatabaseContract.BookTable.TABLE_NAME,
+                null,
+                DatabaseContract.BookTable.COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(userId)},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Book book = new Book();
+                book.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable._ID)));
+                book.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable.COLUMN_TITLE)));
+                book.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable.COLUMN_AUTHOR)));
+                book.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable.COLUMN_DESCRIPTION)));
+                book.setRating(cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable.COLUMN_RATING)));
+                book.setUserId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable.COLUMN_USER_ID)));
+                bookList.add(book);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return bookList;
     }
 }
