@@ -19,9 +19,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText etUsername, etEmail, etPassword;
     Button btnRegister;
     TextView tvLogin;
-
     DatabaseHelper databaseHelper;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Book_Recommendation_Diary">
-        
+
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.RegisterActivity"
             android:exported="true"
             android:theme="@style/Theme.Book_Recommendation_Diary">
             <intent-filter>
@@ -21,12 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
+        <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.AddBookActivity" />
         <activity android:name=".activities.EditBookActivity" />
-        
+
+
+
     </application>
 
 </manifest>
