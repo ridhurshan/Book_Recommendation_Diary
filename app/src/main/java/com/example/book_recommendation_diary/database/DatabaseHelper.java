@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.book_recommendation_diary.models.Book;
+import com.example.book_recommendation_diary.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,36 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "BookDiary.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Incremented version for schema change
+
+    private static final String TABLE_USERS = "users";
+    private static final String TABLE_BOOKS = "books";
+
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_PASSWORD = "password";
+
+    private static final String COLUMN_USER_ID = "user_id";
+    private static final String COLUMN_TITLE = "title";
+    private static final String COLUMN_AUTHOR = "author";
+    private static final String COLUMN_RATING = "rating";
+    private static final String COLUMN_REVIEW = "review";
+
+    private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + "("
+            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_USERNAME + " TEXT UNIQUE,"
+            + COLUMN_EMAIL + " TEXT UNIQUE,"
+            + COLUMN_PASSWORD + " TEXT" + ")";
+
+    private static final String CREATE_TABLE_BOOKS = "CREATE TABLE " + TABLE_BOOKS + "("
+            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_USER_ID + " INTEGER,"
+            + COLUMN_TITLE + " TEXT,"
+            + COLUMN_AUTHOR + " TEXT,"
+            + COLUMN_RATING + " INTEGER,"
+            + COLUMN_REVIEW + " TEXT,"
+            + "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_ID + ")" + ")";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -22,110 +53,99 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_USERS_TABLE = "CREATE TABLE " + DatabaseContract.UserTable.TABLE_NAME + "("
-                + DatabaseContract.UserTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + DatabaseContract.UserTable.COLUMN_USERNAME + " TEXT,"
-                + DatabaseContract.UserTable.COLUMN_EMAIL + " TEXT,"
-                + DatabaseContract.UserTable.COLUMN_PASSWORD + " TEXT" + ")";
-        db.execSQL(CREATE_USERS_TABLE);
-
-        String CREATE_BOOKS_TABLE = "CREATE TABLE " + DatabaseContract.BookTable.TABLE_NAME + "("
-                + DatabaseContract.BookTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + DatabaseContract.BookTable.COLUMN_TITLE + " TEXT,"
-                + DatabaseContract.BookTable.COLUMN_AUTHOR + " TEXT,"
-                + DatabaseContract.BookTable.COLUMN_DESCRIPTION + " TEXT,"
-                + DatabaseContract.BookTable.COLUMN_RATING + " REAL,"
-                + DatabaseContract.BookTable.COLUMN_USER_ID + " INTEGER,"
-                + "FOREIGN KEY(" + DatabaseContract.BookTable.COLUMN_USER_ID + ") REFERENCES "
-                + DatabaseContract.UserTable.TABLE_NAME + "(" + DatabaseContract.UserTable._ID + "))";
-        db.execSQL(CREATE_BOOKS_TABLE);
+        db.execSQL(CREATE_TABLE_USERS);
+        db.execSQL(CREATE_TABLE_BOOKS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseContract.UserTable.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseContract.BookTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         onCreate(db);
     }
 
-    public boolean registerUser(String username, String email, String passwordHash) {
+    public boolean registerUser(String username, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DatabaseContract.UserTable.TABLE_NAME +
-                        " WHERE " + DatabaseContract.UserTable.COLUMN_EMAIL + " = ?",
-                new String[]{email}
-        );
-
-        if (cursor.getCount() > 0) {
-            cursor.close();
-            return false;
-        }
-        cursor.close();
-
         ContentValues values = new ContentValues();
-        values.put(DatabaseContract.UserTable.COLUMN_USERNAME, username);
-        values.put(DatabaseContract.UserTable.COLUMN_EMAIL, email);
-        values.put(DatabaseContract.UserTable.COLUMN_PASSWORD, passwordHash);
+        values.put(COLUMN_USERNAME, username);
+        values.put(COLUMN_EMAIL, email);
+        values.put(COLUMN_PASSWORD, password);
 
-        long result = db.insert(DatabaseContract.UserTable.TABLE_NAME, null, values);
+        long result = db.insert(TABLE_USERS, null, values);
+        db.close();
         return result != -1;
     }
 
-    public int loginUser(String email, String passwordHash) {
+    public User loginUser(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT " + DatabaseContract.UserTable._ID +
-                        " FROM " + DatabaseContract.UserTable.TABLE_NAME +
-                        " WHERE " + DatabaseContract.UserTable.COLUMN_EMAIL + " = ? AND " +
-                        DatabaseContract.UserTable.COLUMN_PASSWORD + " = ?",
-                new String[]{email, passwordHash}
-        );
+        String query = "SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email, password});
 
-        int userId = -1;
+        User user = null;
         if (cursor.moveToFirst()) {
-            userId = cursor.getInt(0);
+            user = new User();
+            user.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)));
+            user.setUsername(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME)));
+            user.setEmail(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL)));
+            user.setPassword(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD)));
         }
         cursor.close();
-        return userId;
+        db.close();
+        return user;
     }
 
-    public boolean addBook(String title, String author, String description, float rating, int userId) {
+    // Book methods remain same...
+    public boolean addBook(Book book) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DatabaseContract.BookTable.COLUMN_TITLE, title);
-        values.put(DatabaseContract.BookTable.COLUMN_AUTHOR, author);
-        values.put(DatabaseContract.BookTable.COLUMN_DESCRIPTION, description);
-        values.put(DatabaseContract.BookTable.COLUMN_RATING, rating);
-        values.put(DatabaseContract.BookTable.COLUMN_USER_ID, userId);
-
-        long result = db.insert(DatabaseContract.BookTable.TABLE_NAME, null, values);
+        values.put(COLUMN_USER_ID, book.getUserId());
+        values.put(COLUMN_TITLE, book.getTitle());
+        values.put(COLUMN_AUTHOR, book.getAuthor());
+        values.put(COLUMN_RATING, book.getRating());
+        values.put(COLUMN_REVIEW, book.getReview());
+        long result = db.insert(TABLE_BOOKS, null, values);
+        db.close();
         return result != -1;
     }
 
     public List<Book> getBooksByUser(int userId) {
         List<Book> bookList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        
-        Cursor cursor = db.query(DatabaseContract.BookTable.TABLE_NAME,
-                null,
-                DatabaseContract.BookTable.COLUMN_USER_ID + " = ?",
-                new String[]{String.valueOf(userId)},
-                null, null, null);
-
+        String query = "SELECT * FROM " + TABLE_BOOKS + " WHERE " + COLUMN_USER_ID + " = ? ORDER BY " + COLUMN_ID + " DESC";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
         if (cursor.moveToFirst()) {
             do {
                 Book book = new Book();
-                book.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable._ID)));
-                book.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable.COLUMN_TITLE)));
-                book.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable.COLUMN_AUTHOR)));
-                book.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable.COLUMN_DESCRIPTION)));
-                book.setRating(cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable.COLUMN_RATING)));
-                book.setUserId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BookTable.COLUMN_USER_ID)));
+                book.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)));
+                book.setUserId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID)));
+                book.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)));
+                book.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_AUTHOR)));
+                book.setRating(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RATING)));
+                book.setReview(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_REVIEW)));
                 bookList.add(book);
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
         return bookList;
+    }
+
+    public boolean updateBook(int bookId, String title, String author, int rating, String review) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TITLE, title);
+        values.put(COLUMN_AUTHOR, author);
+        values.put(COLUMN_RATING, rating);
+        values.put(COLUMN_REVIEW, review);
+        int rowsAffected = db.update(TABLE_BOOKS, values, COLUMN_ID + " = ?", new String[]{String.valueOf(bookId)});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    public boolean deleteBook(int bookId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_BOOKS, COLUMN_ID + " = ?", new String[]{String.valueOf(bookId)});
+        db.close();
+        return rowsDeleted > 0;
     }
 }

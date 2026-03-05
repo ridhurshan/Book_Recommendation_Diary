@@ -4,17 +4,17 @@ public class Book {
     private int id;
     private String title;
     private String author;
-    private String description;
+    private String review; // Named 'review' to match your Activity code
     private float rating;
     private int userId;
 
     public Book() {}
 
-    public Book(int id, String title, String author, String description, float rating, int userId) {
+    public Book(int id, String title, String author, String review, float rating, int userId) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.description = description;
+        this.review = review;
         this.rating = rating;
         this.userId = userId;
     }
@@ -44,12 +44,21 @@ public class Book {
         this.author = author;
     }
 
-    public String getDescription() {
-        return description;
+    public String getReview() {
+        return review;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setReview(String review) {
+        this.review = review;
+    }
+
+    // Added as an alias for backward compatibility with database code
+    public String getDescription() {
+        return review;
+    }
+
+    public void setDescription(String review) {
+        this.review = review;
     }
 
     public float getRating() {

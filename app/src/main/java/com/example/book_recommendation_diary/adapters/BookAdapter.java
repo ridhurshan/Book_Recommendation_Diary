@@ -1,6 +1,7 @@
 package com.example.book_recommendation_diary.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     private List<Book> bookList;
     private Context context;
+    private OnBookClickListener listener;
 
-    public BookAdapter(List<Book> bookList, Context context) {
+    public interface OnBookClickListener {
+        void onBookClick(Book book);
+    }
+
+    public BookAdapter(List<Book> bookList, Context context, OnBookClickListener listener) {
         this.bookList = bookList;
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -36,12 +43,27 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         Book book = bookList.get(position);
         holder.tvTitle.setText(book.getTitle());
         holder.tvAuthor.setText("By: " + book.getAuthor());
-        holder.tvRating.setText("Rating: " + book.getRating() + "/5.0");
+        holder.tvRating.setText("Rating: " + book.getRating() + "/5");
+
+        // Log for debugging
+        Log.d("BookAdapter", "Binding book: " + book.getTitle() + " (ID: " + book.getId() + ")");
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                Log.d("BookAdapter", "Book clicked: " + book.getTitle() + " (ID: " + book.getId() + ")");
+                listener.onBookClick(book);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return bookList.size();
+    }
+
+    public void updateList(List<Book> newList) {
+        this.bookList = newList;
+        notifyDataSetChanged();
     }
 
     public static class BookViewHolder extends RecyclerView.ViewHolder {

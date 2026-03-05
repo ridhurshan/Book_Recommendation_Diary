@@ -24,7 +24,7 @@
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.AddBookActivity" />
-<!--        <activity android:name=".activities.EditBookActivity" />-->
+        <activity android:name=".activities.EditBookActivity" />
 
     </application>
 

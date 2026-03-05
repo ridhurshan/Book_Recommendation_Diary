@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.book_recommendation_diary.R;
 import com.example.book_recommendation_diary.database.DatabaseHelper;
+import com.example.book_recommendation_diary.models.Book;
 
 public class AddBookActivity extends AppCompatActivity {
 
@@ -47,7 +48,14 @@ public class AddBookActivity extends AppCompatActivity {
             return;
         }
 
-        boolean success = db.addBook(title, author, description, rating, userId);
+        Book book = new Book();
+        book.setTitle(title);
+        book.setAuthor(author);
+        book.setReview(description); // DatabaseHelper uses setReview/getReview
+        book.setRating(rating);
+        book.setUserId(userId);
+
+        boolean success = db.addBook(book);
         if (success) {
             Toast.makeText(this, "Book saved successfully!", Toast.LENGTH_SHORT).show();
             finish();

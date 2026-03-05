@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.book_recommendation_diary.R;
 import com.example.book_recommendation_diary.database.DatabaseHelper;
+import com.example.book_recommendation_diary.models.User;
 import com.example.book_recommendation_diary.utils.PasswordUtils;
 
 public class LoginActivity extends AppCompatActivity {
@@ -49,10 +50,11 @@ public class LoginActivity extends AppCompatActivity {
 
             String hashedPassword = PasswordUtils.hashPassword(password);
 
-            int userId = databaseHelper.loginUser(email, hashedPassword);
+            // FIXED: loginUser returns a User object, not an int
+            User user = databaseHelper.loginUser(email, hashedPassword);
 
-            if (userId != -1) {
-
+            if (user != null) {
+                int userId = user.getId();
                 Toast.makeText(LoginActivity.this,
                         "Login successful!",
                         Toast.LENGTH_SHORT).show();
