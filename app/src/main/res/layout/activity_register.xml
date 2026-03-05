@@ -1,55 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center">
+    android:background="@color/bg_primary"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Account"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp" />
-
-    <EditText
-        android:id="@+id/etUsername"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
-        android:inputType="textPersonName"
-        android:layout_marginBottom="12dp" />
+        android:orientation="vertical"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="80dp"
+        android:paddingBottom="40dp">
 
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:layout_marginBottom="12dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📖"
+            android:textSize="48sp"
+            android:layout_marginBottom="24dp" />
 
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_marginBottom="20dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create account"
+            android:textColor="@color/text_primary"
+            android:textSize="30sp"
+            android:fontFamily="serif"
+            android:layout_marginBottom="6dp" />
 
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start your reading journey"
+            android:textColor="@color/text_secondary"
+            android:textSize="15sp"
+            android:layout_marginBottom="44dp" />
 
-    <TextView
-        android:id="@+id/tvLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Already have an account? Login"
-        android:layout_marginTop="16dp"
-        android:textColor="@android:color/holo_blue_dark" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="USERNAME"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/bg_input_field"
+            android:hint="Your name"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:inputType="textPersonName"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EMAIL"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/bg_input_field"
+            android:hint="you@example.com"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:inputType="textEmailAddress"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PASSWORD"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/bg_input_field"
+            android:hint="••••••••"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:inputType="textPassword"
+            android:layout_marginBottom="32dp" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/bg_button_primary"
+            android:text="Create Account"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-medium"
+            android:stateListAnimator="@null"
+            android:layout_marginBottom="28dp" />
+
+        <TextView
+            android:id="@+id/tvLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Already have an account? Login"
+            android:textColor="@color/accent"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium" />
+
+    </LinearLayout>
+</ScrollView>

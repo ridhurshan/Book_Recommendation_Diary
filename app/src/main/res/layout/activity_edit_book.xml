@@ -2,47 +2,139 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:background="@color/bg_primary"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="52dp"
+        android:paddingBottom="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit book"
+            android:textColor="@color/text_primary"
+            android:textSize="28sp"
+            android:fontFamily="serif"
+            android:layout_marginBottom="6dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update your notes and rating"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:layout_marginBottom="36dp" />
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BOOK TITLE"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp" />
 
         <EditText
             android:id="@+id/etTitle"
             android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/bg_input_field"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint"
+            android:textSize="15sp"
+            android:inputType="textCapSentences"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Author -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Book Title"
-            android:layout_marginBottom="12dp"/>
+            android:text="AUTHOR"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp" />
 
         <EditText
             android:id="@+id/etAuthor"
             android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/bg_input_field"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint"
+            android:textSize="15sp"
+            android:inputType="textCapWords"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Rating -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Author"
-            android:layout_marginBottom="12dp"/>
+            android:text="RATING (1–5)"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp" />
 
         <EditText
             android:id="@+id/etRating"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Rating (1-5)"
+            android:layout_height="52dp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/bg_input_field"
+            android:hint="e.g. 4"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
             android:inputType="number"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="20dp" />
+
+        <!-- Review -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SHORT REVIEW"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp" />
 
         <EditText
             android:id="@+id/etReview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Short Review"
-            android:layout_marginBottom="20dp"/>
+            android:layout_height="120dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:background="@drawable/bg_input_field"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint"
+            android:textSize="15sp"
+            android:inputType="textMultiLine|textCapSentences"
+            android:gravity="top"
+            android:layout_marginBottom="32dp" />
 
         <Button
             android:id="@+id/btnUpdate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Update Book"/>
-    </LinearLayout>
+            android:layout_height="52dp"
+            android:background="@drawable/bg_button_primary"
+            android:text="Update Book"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-medium"
+            android:stateListAnimator="@null" />
 
+    </LinearLayout>
 </ScrollView>

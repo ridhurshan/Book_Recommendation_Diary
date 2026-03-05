@@ -1,9 +1,36 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Book_Recommendation_Diary" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Book_Recommendation_Diary" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorPrimaryVariant">@color/accent</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/accent_light</item>
+        <item name="android:windowBackground">@color/bg_primary</item>
+        <item name="android:statusBarColor">@color/bg_primary</item>
+        <item name="android:navigationBarColor">@color/bg_primary</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="Theme.Book_Recommendation_Diary" parent="Base.Theme.Book_Recommendation_Diary" />
+    <style name="InputField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:background">@drawable/bg_input_field</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="PrimaryButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
 </resources>

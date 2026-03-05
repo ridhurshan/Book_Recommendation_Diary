@@ -1,5 +1,6 @@
 package com.example.book_recommendation_diary.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,10 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.book_recommendation_diary.R;
-
 import com.example.book_recommendation_diary.database.DatabaseHelper;
 import com.example.book_recommendation_diary.utils.PasswordUtils;
-
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -35,7 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
 
         btnRegister.setOnClickListener(v -> {
-
             String username = etUsername.getText().toString().trim();
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
@@ -46,16 +44,16 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             String hashedPassword = PasswordUtils.hashPassword(password);
-
             boolean isInserted = databaseHelper.registerUser(username, email, hashedPassword);
 
             if (isInserted) {
                 Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
-                finish(); // go back to login
+                finish(); 
             } else {
                 Toast.makeText(this, "User already exists!", Toast.LENGTH_SHORT).show();
             }
         });
 
+        tvLogin.setOnClickListener(v -> finish());
     }
 }

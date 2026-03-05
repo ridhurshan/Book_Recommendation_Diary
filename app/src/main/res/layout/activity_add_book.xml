@@ -1,42 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/bg_primary"
+    android:fillViewport="true">
 
-    <EditText
-        android:id="@+id/etBookTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Book Title" />
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="52dp"
+        android:paddingBottom="40dp">
 
-    <EditText
-        android:id="@+id/etBookAuthor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Author" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add a book"
+            android:textColor="@color/text_primary"
+            android:textSize="28sp"
+            android:fontFamily="serif"
+            android:layout_marginBottom="6dp" />
 
-    <EditText
-        android:id="@+id/etBookDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Description"
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        android:lines="3" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Record your thoughts and rating"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:layout_marginBottom="36dp" />
 
-    <RatingBar
-        android:id="@+id/rbBookRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:numStars="5"
-        android:stepSize="0.5" />
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BOOK TITLE"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp" />
 
-    <Button
-        android:id="@+id/btnSaveBook"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save Book" />
+        <EditText
+            android:id="@+id/etBookTitle"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/bg_input_field"
+            android:hint="e.g. The Great Gatsby"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:inputType="textCapSentences"
+            android:layout_marginBottom="20dp" />
 
-</LinearLayout>
+        <!-- Author -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AUTHOR"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etBookAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/bg_input_field"
+            android:hint="e.g. F. Scott Fitzgerald"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:inputType="textCapWords"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Rating -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YOUR RATING"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="10dp" />
+
+        <RatingBar
+            android:id="@+id/rbBookRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:rating="0"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Description -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DESCRIPTION"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etBookDescription"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:background="@drawable/bg_input_field"
+            android:hint="What did you think of this book?"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:inputType="textMultiLine|textCapSentences"
+            android:lines="3"
+            android:gravity="top"
+            android:layout_marginBottom="32dp" />
+
+        <Button
+            android:id="@+id/btnSaveBook"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/bg_button_primary"
+            android:text="Save Book"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-medium"
+            android:stateListAnimator="@null" />
+
+    </LinearLayout>
+</ScrollView>
